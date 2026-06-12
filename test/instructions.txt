@@ -1,0 +1,145 @@
+🧪 OPTION A — Test via Vite (recommended)
+1. Create a test Vite app
+npm create vite@latest test-app
+cd test-app
+npm install
+
+Pick:
+
+React (or Vanilla)
+JS or TS (either is fine)
+2. Link your local package
+
+Inside your tailwind-groupify project:
+
+npm link
+
+Then inside your test-app:
+
+npm link tailwind-groupify
+
+This makes your local plugin available like a real npm package.
+
+3. Install React plugin (if needed)
+npm install @vitejs/plugin-react
+4. Configure Vite
+
+Edit vite.config.js:
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import twGroupify from "tailwind-groupify/vite";
+
+export default defineConfig({
+  plugins: [react(), twGroupify()],
+});
+5. Use it in your app
+
+Edit src/App.jsx:
+
+function App() {
+  return (
+    <div>
+      <div className="flex items-center justify-center p-4 bg-red-500">
+        Box 1
+      </div>
+
+      <div className="flex items-center justify-center p-2 bg-blue-500">
+        Box 2
+      </div>
+    </div>
+  );
+}
+
+export default App;
+6. Import the virtual CSS
+
+Edit src/main.jsx:
+
+import "virtual:tw-groupify.css";
+7. Run dev server
+npm run dev
+✅ What to check
+Class names should transform (look in DOM via devtools)
+You should see generated alias like twg-0
+CSS should be injected
+No runtime errors
+Overlay (if enabled) should appear
+🧪 OPTION B — Test CLI quickly
+
+From your plugin project:
+
+node bin/cli.js "test/**/*.jsx"
+
+Create a quick test file:
+
+// test/demo.jsx
+export default function Demo() {
+  return (
+    <div className="flex items-center justify-center p-4">
+      Hello
+    </div>
+  );
+}
+
+Run:
+
+node bin/cli.js "test/**/*.jsx"
+
+Check:
+
+File rewritten
+CSS generated (tw-groupify.css)
+Safelist generated
+🧪 OPTION C — Debug mode (recommended)
+
+In tw-groupify.config.js:
+
+module.exports = {
+  debug: true,
+  preserveOrder: true,
+};
+
+Then run Vite and check terminal output:
+
+You should see metrics like:
+
+📊 Tailwind Groupify Metrics:
+Original size: ...
+Optimized size: ...
+Saved: ...
+Compression: ...
+Groups created: ...
+🔍 How to verify it's actually working
+
+Open browser devtools:
+
+1. Inspect an element
+
+You should see:
+
+<div class="twg-0 p-4 bg-red-500">
+2. Check CSS
+
+Search in styles:
+
+.twg-0 {
+  @apply flex items-center justify-center;
+}
+3. Confirm Tailwind still works
+Hover states
+Responsive classes
+Variants
+⚠️ Common issues
+❌ No CSS appearing
+Make sure you imported:
+import "virtual:tw-groupify.css";
+❌ Classes not transformed
+Ensure plugin is in Vite config
+Ensure file extensions match .jsx / .tsx
+❌ Broken styles
+Try:
+preserveOrder: true
+❌ HMR not updating
+Restart dev server after linking package
+npm link sometimes needs a restart
