@@ -1,6 +1,22 @@
 # ⚡ tailwind-groupify
 
-> Automatically compress, deduplicate, and optimize Tailwind CSS class usage at build time.
+> Automatically extract repeated [TailwindCSS](https://tailwindcss.com) utility combinations into shared generated classes, reducing HTML/JSX size and keeping large codebases easier to maintain - with zero runtime cost.
+
+Large Tailwind codebases often repeat the same utility combinations hundreds of times:
+
+- `flex items-center justify-center`
+- `grid gap-4`
+- `text-sm font-medium`
+
+tailwind-groupify detects these patterns across your project, extracts them into generated classes using `@apply`, and rewrites your markup automatically.
+
+### Benefits
+
+- Deduplicates repeated utility classes
+- Reduces HTML and JSX output size
+- Extracts shared utility patterns across files
+- Generates reusable classes at build time
+- Adds zero runtime overhead
 
 Turn this:
 
@@ -26,7 +42,7 @@ With generated CSS:
 
 ---
 
-## 🚀 Why?
+## 🚀 Why use tailwind-groupify?
 
 * 📦 Reduce HTML + JSX size
 * 🔁 Deduplicate repeated Tailwind patterns
